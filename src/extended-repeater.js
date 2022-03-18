@@ -20,8 +20,9 @@ function repeater(str, options) {
     return options.additionRepeatTimes === undefined ? String(str) + String(options.addition) : String(str) + createAdd(addition, additionRepeatTimes, additionSeparator);
   }
   let result = [];
+  let addStr = createAdd(options.addition, options.additionRepeatTimes, options.additionSeparator);
   for (let i = 0; i < options.repeatTimes; i++) {
-    result[i] = String(str) + createAdd(options.addition, options.additionRepeatTimes, options.additionSeparator);
+    result[i] = String(str) + addStr;
     }
   return options.separator === undefined ? result.join('+') : result.join(options.separator)
 }
