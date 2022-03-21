@@ -20,13 +20,82 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  constructor(input) {
+    if (input === false) {
+      this.modification = "reverse";
+    } else {
+      this.modification = "direct";
+    }
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  encrypt(str, codeWord) {
+    if (str === undefined || codeWord === undefined) {
+      throw new Error("Incorrect arguments!");
+    }
+    let base = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let arrTemp = [];
+    let codeWordTempArr = codeWord.toUpperCase().split("");
+    for (let i = 0; i < str.length; i++) {
+      if (/[a-z]/i.test(str[i])) {
+        arrTemp.push(codeWordTempArr[0]);
+        codeWordTempArr.shift();
+        if (codeWordTempArr.length === 0) {
+          codeWordTempArr = codeWord.toUpperCase().split("");
+        }
+      } else {
+        arrTemp.push(str[i]);
+      }
+    }
+    return this.modification == "direct" 
+      ? arrTemp
+      .map((item, i) =>
+        /[A-Z]/.test(item)
+          ? base[base.indexOf(item) + base.indexOf(str[i].toUpperCase())]
+          : item
+      )
+      .join("")
+      : arrTemp
+      .map((item, i) =>
+        /[A-Z]/.test(item)
+          ? base[base.indexOf(item) + base.indexOf(str[i].toUpperCase())]
+          : item
+      )
+      .reverse()
+      .join("")
+    }
+  decrypt(str, codeWord) {
+    if (str === undefined || codeWord === undefined) {
+      throw new Error("Incorrect arguments!");
+    }
+    let base = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let arrTemp = [];
+    let codeWordTempArr = codeWord.toUpperCase().split("");
+    for (let i = 0; i < str.length; i++) {
+      if (/[a-z]/i.test(str[i])) {
+        arrTemp.push(codeWordTempArr[0]);
+        codeWordTempArr.shift();
+        if (codeWordTempArr.length === 0) {
+          codeWordTempArr = codeWord.toUpperCase().split("");
+        }
+      } else {
+        arrTemp.push(str[i]);
+      }
+    }
+    return this.modification == "direct" 
+      ? arrTemp
+      .map((item, i) =>
+        /[A-Z]/.test(item)
+          ? base[base.lastIndexOf(str[i]) - base.indexOf(item)]
+          : item
+      )
+      .join("")
+      : arrTemp
+      .map((item, i) =>
+        /[A-Z]/.test(item)
+          ? base[base.lastIndexOf(str[i]) - base.indexOf(item)]
+          : item
+      )
+      .reverse()
+      .join("")
   }
 }
 
